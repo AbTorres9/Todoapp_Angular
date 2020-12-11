@@ -1,9 +1,55 @@
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
+import { Todo } from './../model/Todo';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoService {
+  todos: Todo[];
+  constructor() {
+    this.todos = [
+      {
+        id: '11',
+        title: 'Learn Javascript',
+        isCompleted: true,
+        date: new Date(),
+      },
+      {
+        id: '22',
+        title: 'Learn Angular',
+        isCompleted: true,
+        date: new Date(),
+      },
+      {
+        id: '33',
+        title: 'Learn React',
+        isCompleted: false,
+        date: new Date(),
+      },
+    ];
+  }
 
-  constructor() { }
+  getTodos() {
+    return of(this.todos);
+  }
+
+  addTodos(todo: Todo) {
+    this.todos.push(todo);
+  }
+
+  changeStatus(todo: Todo) {
+    this.todos.map((singleTodo) => {
+      if (singleTodo.id == todo.id) {
+        todo.isCompleted = !todo.isCompleted;
+      }
+    });
+  }
+
+  deleteTodo(todo: Todo) {
+    const indexofTodo = this.todos.findIndex((currentObj) => {
+      currentObj.id === todo.id;
+    });
+    this.todos.splice(indexofTodo, 1);
+  }
 }
